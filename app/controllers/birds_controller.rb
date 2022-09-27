@@ -12,6 +12,17 @@ class BirdsController < ApplicationController
     render json: bird, status: :created
   end
 
+	# Update /birds/:id
+	def update
+		bird = Bird.all.find_by(id: params[:id])
+		if (bird)
+			bird.update(bird_params)
+			render(json: bird, status: :accepted)
+		else
+			render(json: {error: "bird could not be found"}, status: :not_found)
+		end
+	end
+
   # GET /birds/:id
   def show
     bird = Bird.find_by(id: params[:id])
@@ -25,7 +36,8 @@ class BirdsController < ApplicationController
   private
 
   def bird_params
-    params.permit(:name, :species)
+    params.permit(:name, :species, :likes)
   end
 
 end
+
